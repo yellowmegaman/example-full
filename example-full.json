@@ -14,7 +14,10 @@
       "type": "docker",
       "commit": true,
       "image": "{{user `from_image`}}",
-      "run_command": ["-dit", "--name", "{{user `app`}}{{user `tag`}}", "{{.Image}}", "/bin/bash"]
+      "run_command": ["-dit", "--name", "{{user `app`}}{{user `tag`}}", "{{.Image}}", "/bin/bash"],
+      "changes": [
+        "ENTRYPOINT [\"/bin/{{user `app`}}\"]"
+      ]
     }
   ],
   "provisioners": [
