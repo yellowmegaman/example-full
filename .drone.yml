@@ -42,6 +42,9 @@ steps:
 - name: build
   image: golang:1.12.5-alpine
   commands:
-  - go build main
-  - chmod +x main
+  - go build src/example-full/main.go
+
+- name: test
+  image: alpine:latest
+  commands:
   - ./main
