@@ -64,6 +64,8 @@ steps:
   commands:
   - echo "Wait for postgres"
   - until nc -zv testpostgres 5432; do sleep 0.2; done
+  - echo "Postgres port open, will wait a bit longer"
+  - sleep 5
   - ./example-full
 
 - name: pack
