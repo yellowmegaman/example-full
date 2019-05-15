@@ -40,8 +40,9 @@ steps:
   - nc -zv dockerhost 2375
 
 - name: build
-  image: golang:1.12.5
+  image: golang:1.12.5-alpine
   commands:
+  - apk add --no-cache git
   - go get github.com/lib/pq
   - go build -o example-full src/example-full/main.go
 
@@ -54,13 +55,15 @@ steps:
   detach: true
 
 - name: test
-  image: debian:buster-slim
+  image: alpine:3.9
   environment:
     PGHOST: testpostgres
     PGUSER: myusername
     PGPASS: mypassword
     PGDBNAME: mydb
   commands:
+  - echo "Wait for postgres"
+  - until nc -zv testpostgres 5432; do sleep 0.2; done
   - ./example-full
 
 - name: pack
