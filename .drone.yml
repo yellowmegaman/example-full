@@ -56,10 +56,10 @@ steps:
 - name: test
   image: alpine:latest
   environment:
-    PGHOST=testpostgres
-    PGUSER=myusername
-    PGPASS=mypassword
-    PGDBNAME=mydb
+    PGHOST: testpostgres
+    PGUSER: myusername
+    PGPASS: mypassword
+    PGDBNAME: mydb
   commands:
   - ./example-full
 
