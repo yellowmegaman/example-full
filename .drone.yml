@@ -46,27 +46,27 @@ steps:
   - go get github.com/lib/pq
   - GOOS=linux GOARCH=amd64 go build -o example-full src/example-full/main.go
 
-- name: testpostgres
-  image: postgres:9.6
-  environment:
-    POSTGRES_DB: mydb
-    POSTGRES_PASSWORD: mypassword
-    POSTGRES_USER: myusername
-  detach: true
+#- name: testpostgres
+#  image: postgres:9.6
+#  environment:
+#    POSTGRES_DB: mydb
+#    POSTGRES_PASSWORD: mypassword
+#    POSTGRES_USER: myusername
+#  detach: true
 
-- name: test
-  image: alpine:3.9
-  environment:
-    PGHOST: testpostgres
-    PGUSER: myusername
-    PGPASS: mypassword
-    PGDBNAME: mydb
-  commands:
-  - echo "Wait for postgres"
-  - until nc -zv testpostgres 5432; do sleep 0.2; done
-  - echo "Postgres port open, will wait a bit longer"
-  - sleep 5
-  - ./example-full
+#- name: test
+#  image: alpine:3.9
+#  environment:
+#    PGHOST: testpostgres
+#    PGUSER: myusername
+#    PGPASS: mypassword
+#    PGDBNAME: mydb
+#  commands:
+#  - echo "Wait for postgres"
+#  - until nc -zv testpostgres 5432; do sleep 0.2; done
+#  - echo "Postgres port open, will wait a bit longer"
+#  - sleep 5
+#  - ./example-full
 
 - name: pack
   image: yellowmegaman/container-packer:1.3.3
