@@ -44,7 +44,7 @@ steps:
   commands:
   - apk add --no-cache git
   - go get github.com/lib/pq
-  - go build -o example-full src/example-full/main.go
+  - GOOS=linux GOARCH=amd64 go build -o example-full src/example-full/main.go
 
 - name: testpostgres
   image: postgres:9.6
