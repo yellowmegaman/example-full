@@ -46,7 +46,7 @@ spec:
       terminationGracePeriodSeconds: 1800
       containers:
       - name: example-full
-        image: quay.io/yellowmegaman/example-full:5217462b4f19d14072b3f3cd5fcdf07fad7bb0dc
+        image: quay.io/yellowmegaman/example-full:d571daafd64c1857346780a9fb14258434c5b9a9
         command: ["/bin/example-full"]
         imagePullPolicy: Always
         ports:
