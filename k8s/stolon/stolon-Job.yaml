@@ -8,11 +8,11 @@ data:
   entrypoint.sh: |-
     #!/bin/bash
     sleep 100
-    echo "stolon-proxy-service.stolon.svc.cluster.local:5432:*:*:$(cat /etc/secrets/stolon/password)" > /root/.pgpass
+    echo "stolon-proxy-service.postgres.svc.cluster.local:5432:*:*:$(cat /etc/secrets/stolon/password)" > /root/.pgpass
     chmod 0600 /root/.pgpass
-    psql -h stolon-proxy-service.stolon.svc.cluster.local -U stolon -d postgres -c "CREATE USER myusername WITH PASSWORD 'mypassword';"
-    psql -h stolon-proxy-service.stolon.svc.cluster.local -U stolon -d postgres -c "CREATE DATABASE mydb OWNER myusername;"
-    psql -h stolon-proxy-service.stolon.svc.cluster.local -U stolon -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE mydb to myusername;"
+    psql -h stolon-proxy-service.postgres.svc.cluster.local -U stolon -d postgres -c "CREATE USER myusername WITH PASSWORD 'mypassword';"
+    psql -h stolon-proxy-service.postgres.svc.cluster.local -U stolon -d postgres -c "CREATE DATABASE mydb OWNER myusername;"
+    psql -h stolon-proxy-service.postgres.svc.cluster.local -U stolon -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE mydb to myusername;"
 
 ---
 kind: Job

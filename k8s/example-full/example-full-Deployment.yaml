@@ -13,7 +13,7 @@ metadata:
   namespace: example-full
 type: Opaque
 data:
-  password: cGFzc3dvcmQ=
+  password: bXlwYXNzd29yZA==
 
 ---
 kind: Deployment
@@ -46,7 +46,7 @@ spec:
       terminationGracePeriodSeconds: 1800
       containers:
       - name: example-full
-        image: quay.io/yellowmegaman/example-full:d571daafd64c1857346780a9fb14258434c5b9a9
+        image: quay.io/yellowmegaman/example-full:e88fc439f350a324c008f49891090a8b280c0690
         command: ["/bin/example-full"]
         imagePullPolicy: Always
         ports:
@@ -69,7 +69,7 @@ spec:
           - name: PGPORT
             value: "5432"
           - name: PGHOST
-            value: "stolon-proxy.postgres.svc.cluster.local"
+            value: "stolon-proxy-service.postgres.svc.cluster.local"
           - name: PGUSER
             value: "myusername"
           - name: PGPASS
@@ -86,3 +86,20 @@ spec:
             - example
           initialDelaySeconds: 30
           timeoutSeconds: 5
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: example-full
+  namespace: example-full
+  labels:
+    app: example-full
+spec:
+  clusterIP: None
+  ports:
+  - name: http-service
+    port: 8002
+  selector:
+    app: example-full
