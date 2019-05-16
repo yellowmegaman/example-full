@@ -1,0 +1,88 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: example-full
+
+
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: pgcreds
+  namespace: example-full
+type: Opaque
+data:
+  password: cGFzc3dvcmQ=
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: example-full
+  namespace: example-full
+  labels:
+    app: example-full
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-full
+  template:
+    metadata:
+      labels:
+        app: example-full
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - example-full
+              topologyKey: kubernetes.io/hostname
+      terminationGracePeriodSeconds: 1800
+      containers:
+      - name: example-full
+        image: quay.io/yellowmegaman/example-full:5217462b4f19d14072b3f3cd5fcdf07fad7bb0dc
+        command: ["/bin/example-full"]
+        imagePullPolicy: Always
+        ports:
+        - name: http-endpoint
+          containerPort: 8002
+        resources:
+          limits:
+            cpu: "50m"
+            memory: 128Mi
+          requests:
+            cpu: "50m"
+            memory: 128Mi
+        env:
+          - name: APIHOST
+            value: "0.0.0.0"
+          - name: APIPORT
+            value: "8002"
+          - name: PGDBNAME
+            value: "mydb"
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            value: "stolon-proxy.postgres.svc.cluster.local"
+          - name: PGUSER
+            value: "myusername"
+          - name: PGPASS
+            valueFrom:
+              secretKeyRef:
+                name: pgcreds
+                key: password
+          - name: PGDBNAME
+            value: "mydb"
+        livenessProbe:
+          exec:
+            command:
+            - pgrep
+            - example
+          initialDelaySeconds: 30
+          timeoutSeconds: 5

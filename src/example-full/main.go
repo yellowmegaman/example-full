@@ -5,6 +5,8 @@ import (
 	"os"
 	"database/sql"
 	_ "github.com/lib/pq"
+	"log"
+	"net/http"
 )
 
 var (
@@ -12,6 +14,8 @@ var (
 	user     = os.Getenv("PGUSER")
 	password = os.Getenv("PGPASS")
 	dbname   = os.Getenv("PGDBNAME")
+	apihost  = os.Getenv("APIHOST")
+	apiport  = os.Getenv("APIPORT")
 )
 
 
@@ -37,5 +41,10 @@ func connectdb() {
 
 
 func apiserve() {
-	
+	http.HandleFunc("/hello/", requestHandler)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", apihost, apiport), nil))
+}
+
+func requestHandler(w http.ResponseWriter, r *http.Request) {
+	// ...
 }
