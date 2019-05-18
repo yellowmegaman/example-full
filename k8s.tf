@@ -1,8 +1,3 @@
-resource "google_compute_address" "example-full-k8s-ip" {
-  name = "example-full-k8s-ip"
-  region = "europe-west4"
-}
-
 resource "google_container_cluster" "example-full" {
   name                     = "example-full"
   location                 = "europe-west4-b"
@@ -27,10 +22,10 @@ resource "google_container_node_pool" "example-full-n1s2-pool" {
   name               = "example-full"
   location           = "europe-west4-b"
   cluster            = "${google_container_cluster.example-full.name}"
-  initial_node_count = "7"
+  initial_node_count = "4"
   autoscaling {
     min_node_count   = "4"
-    max_node_count   = "14"
+    max_node_count   = "7"
   }
   management {
     auto_repair  = "true"
